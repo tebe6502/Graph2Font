@@ -1,0 +1,70 @@
+object frameLineRange: TframeLineRange
+  Left = 0
+  Top = 0
+  Width = 92
+  Height = 63
+  AutoSize = True
+  TabOrder = 0
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 92
+    Height = 63
+    BevelOuter = bvNone
+    TabOrder = 0
+    object bGet: TButton
+      Left = 10
+      Top = 22
+      Width = 29
+      Height = 19
+      Caption = 'Get'
+      TabOrder = 0
+    end
+    object seLine: TBMDSpinEdit
+      Left = 42
+      Top = 0
+      Width = 47
+      Height = 28
+      Cursor = crArrow
+      EditLabel.Width = 35
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Line:    '
+      EditLabel.Transparent = False
+      LabelPosition = lpLeft
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      Text = '0'
+      OnChange = seLineChange
+      OnContextPopup = seLineContextPopup
+      Increment = -1.000000000000000000
+      MaxValue = 239.000000000000000000
+      GaugeMaxValue = 239.000000000000000000
+      Position = 0
+      Precision = 0
+      TrackBarEnabled = False
+    end
+    object seRange: TBMDSpinEdit
+      Left = 42
+      Top = 34
+      Width = 47
+      Height = 28
+      Cursor = crArrow
+      EditLabel.Width = 35
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Range:'
+      EditLabel.Transparent = False
+      LabelPosition = lpLeft
+      TabOrder = 2
+      Text = '239'
+      OnContextPopup = seLineContextPopup
+      Increment = -1.000000000000000000
+      MaxValue = 239.000000000000000000
+      GaugeMaxValue = 239.000000000000000000
+      Value = 239.000000000000000000
+      Position = 239
+      Precision = 0
+      TrackBarEnabled = False
+    end
+  end
+end

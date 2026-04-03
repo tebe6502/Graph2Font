@@ -1,0 +1,94 @@
+MCH file format
+----------------
+
+screen 32 bytes	if file_size in [32*30*9+5*240+30+4*240+8*240+3*240+5*256, 32*30*9+5*240+30+4*240+8*240+3*240+5*256+26*240+1, 32*30*9+5*240+30]
+screen 40 bytes	if file_size in [40*30*9+5*240+30+4*240+8*240+3*240+5*256, 40*30*9+5*240+30+4*240+8*240+3*240+5*256+26*240+1, 40*30*9+5*240+30]
+screen 48 bytes if file_size in [48*30*9+5*240+30+4*240+8*240+3*240+5*256, 48*30*9+5*240+30+4*240+8*240+3*240+5*256+26*240+1, 48*30*9+5*240+30]
+
+
+
+SHORT MCH FILE (bitmap)
+-------------------------------------------------
+
+length		type	desc
+------		----	----
+0		BYTE	bit7 - invers (DLI MODE)
+                        bit6 - invers (DLI+ MODE)
+
+
+			first byte of file, additional info
+
+			bit0..1		0 = GED+
+					1 = DLI
+					2 = GED-
+					3 = PGR
+
+			bit2..3		0 = Pixel 1x1
+					1 = Pixel 2x1
+					2 = Pixel 4x1
+
+			bit4..5		0 = GTIA 16G	GRAPHICS 9
+					1 = GTIA 9C	GRAPHICS 10
+					2 = GTIA 16C	GRAPHICS 11
+
+
+1..8            BYTE	char	(line0..7)
+
+...
+...
+...
+
+
+240		BYTE	ColBAK ($D01A)
+240		BYTE	Color0 ($D016)
+240		BYTE	Color1 ($D017)
+240		BYTE	Color2 ($D018)
+240		BYTE	Color3 ($D019)
+
+
+MEDIUM MCH FILE (bitmap + pmg)
+-------------------------------------------------
+
+240		BYTE	ColPM0 ($D016)
+240		BYTE	ColPM1 ($D017)
+240		BYTE	ColPM2 ($D018)
+240		BYTE	ColPM3 ($D019)
+
+240		BYTE	hposP0 ($d000)
+240		BYTE	hposP1 ($d001)
+240		BYTE	hposP2 ($d002)
+240		BYTE	hposP3 ($d003)
+
+240		BYTE	hposM0 ($d004)
+240		BYTE	hposM1 ($d005)
+240		BYTE	hposM2 ($d006)
+240		BYTE	hposM3 ($d007)
+
+240		BYTE	bit0..1	sizeP0
+			bit2..3 sizeP1
+			bit4..5 sizeP2
+			bit6..7 sizeP3
+
+240		BYTE	bit0..1	sizeM0
+			bit2..3 sizeM1
+			bit4..5 sizeM2
+			bit6..7 sizeM3
+
+240		BYTE	gtictl ($d01b)
+
+256		BYTE	Player0 shape
+256		BYTE	Player1 shape
+256		BYTE	Player2 shape
+256		BYTE	Player3 shape
+
+256		BYTE	Missile shape
+
+
+FULL MCH FILE (bitmap + pmg + raster)
+-------------------------------------------------
+
+30*240		BYTE	G2F RASTER PROGRAM
+
+1		BYTE	RASTER GLOBAL OFFSET
+
+32		BYTE	GTIA

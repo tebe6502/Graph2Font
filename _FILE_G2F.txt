@@ -1,0 +1,145 @@
+G2F file format
+---------------
+
+length		type	desc
+------		----	----
+1		BYTE	SCRW Screen Width (32, 40, 48)
+1		BYTE	bit 0-2	Pixel (1,2,4)
+			bit 3-7	Charset Compress ($80-Normal, $40-Optymizing, $20-Original, $10-JGP, $08-JGP2)
+
+1		BYTE	bit 0-6	CHRC Charset Count
+			bit 7	(0=old raster program, 1=new raster program)
+
+SCRW*30		BYTE	Screen and Invers Data
+
+(CHRC+1)*1024	BYTE	Charsets Data
+
+30		BYTE	bit 0-6	Charsets Table
+			bit 7	newFnt
+
+256		BYTE	Bitmap Colors - Background
+256		BYTE	Bitmap Colors - Color 0
+256		BYTE	Bitmap Colors - Color 1
+256		BYTE	Bitmap Colors - Color 2
+256		BYTE	Bitmap Colors - Color 3
+
+256		BYTE	PMG Colors - Player Missile 0
+256		BYTE	PMG Colors - Player Missile 1
+256		BYTE	PMG Colors - Player Missile 2
+256		BYTE	PMG Colors - Player Missile 3
+
+256		WORD	PMG_INFO - Player 0
+			bit 12-15  PMG Priority
+
+256		WORD	PMG_INFO - Missile 0
+
+256		WORD	PMG_INFO - Player 1
+			bit 12	 - 5th Player (0=disabled, 1=enabled)
+			bit 13	 - Multicolor PMG (0=disabled, 1=enabled)
+
+256		WORD	PMG_INFO - Missile 1
+
+256		WORD	PMG_INFO - Player 2
+256		WORD	PMG_INFO - Missile 2
+
+256		WORD	PMG_INFO - Player 3
+256		WORD	PMG_INFO - Missile 3
+
+256		BYTE	Player0	DATA
+256		BYTE	Missile0 DATA
+
+256		BYTE	Player1	DATA
+256		BYTE	Missile1 DATA
+
+256		BYTE	Player2	DATA
+256		BYTE	Missile2 DATA
+
+256		BYTE	Player3	DATA
+256		BYTE	Missile3 DATA
+
+1		BYTE	unused
+
+240*290		BYTE	Sprajt
+			bit 0 - Player0  (0=disabled, 1=enabled)
+			bit 1 - Missile0 (0=disabled, 1=enabled)
+			bit 2 - Player1  (0=disabled, 1=enabled)
+			bit 3 - Missile1 (0=disabled, 1=enabled)
+			bit 4 - Player2  (0=disabled, 1=enabled)
+			bit 5 - Missile2 (0=disabled, 1=enabled)
+			bit 6 - Player3  (0=disabled, 1=enabled)
+			bit 7 - Missile3 (0=disabled, 1=enabled)
+
+240*290		BYTE	SprajtX
+			bit 0 - Player0 Pixel  (0=disabled, 1=enabled)
+			bit 1 - Missile0 Pixel (0=disabled, 1=enabled)
+			bit 2 - Player1 Pixel  (0=disabled, 1=enabled)
+			bit 3 - Missile1 Pixel (0=disabled, 1=enabled)
+			bit 4 - Player2 Pixel  (0=disabled, 1=enabled)
+			bit 5 - Missile2 Pixel (0=disabled, 1=enabled)
+			bit 6 - Player3 Pixel  (0=disabled, 1=enabled)
+			bit 7 - Missile3 Pixel (0=disabled, 1=enabled)
+
+256		BYTE	BUFF [0..255]
+			BUFF [1]	bit 0-2 (1=GED+, 2=DLI, 3=GED-)
+					bit 6 (0=DLI, 1=DLI+)
+					bit 7 (0=GED+, 1=GED+ disabled badlines)
+
+240*12*2	WORD	RASTER_PROGRAM
+
+30		BYTE	Graphics Mode (1,2,4,255)
+
+210		BYTE	unused
+
+16		BYTE	BUFF [0..15]
+			raster_ofset = BUFF[0]-8
+
+1		BYTE	CHARSET LIMITATIONS - LAST CHAR
+
+256		BYTE	Lock Colors - Background
+256		BYTE	Lock Colors - Color 0
+256		BYTE	Lock Colors - Color 1
+256		BYTE	Lock Colors - Color 2
+256		BYTE	Lock Colors - Color 3
+
+1		BYTE	unused
+
+1		BYTE	Video Chipset [0..2]
+			[0] = 0 - ANTIC+GTIA, 1 - ANTIC+VBXE
+			[1] = color map cell width
+			[2] = color map cell height
+
+48*240		BYTE	VBXE Colors Map
+
+1		BYTE	CHARSET LIMITATIONS - FIRST CHAR
+
+SCRW*30		BYTE	Invers2 Data (DLI+)
+
+30		BYTE	Table2 Data (DLI+)
+
+128		BYTE	Charset limitations
+
+240		WORD	RASTER_PROGRAM (line offset)
+
+1		BYTE	unused (1)
+
+
+
+PMG_INFO
+--------
+
+bit 0-7		Horizontal Position
+bit 8-11	PMG Size
+bit 15		(0-enabled PMG, 1-disabled PMG)
+
+
+RASTER_PROGRAM
+--------------
+bit 0-7		Code:
+
+		$00-NOP	Value			(0,2,3,4..36 cycle)
+		$01-LDA#, $02-LDX#, $03-LDY#	(2 cycle)
+		$41-LDA0, $42-LDX0, $43-LDY0	(3 cycle)
+		$61-LDA, $62-LDX, $63-LDY	(4 cycle)
+		$81-STA, $82-STX, $83-STY)	(4 cycle)
+
+bit 8-15	Value (0..255)

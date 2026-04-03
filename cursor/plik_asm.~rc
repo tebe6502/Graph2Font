@@ -1,0 +1,6 @@
+PROGRAM	RCDATA "anima.asm"
+MADS	RCDATA "mads.exe"
+LOAFNT	RCDATA "loa_fnt.asm"
+FADING	RCDATA "fade.asm"
+HVSCROL	RCDATA "hvscrol.asm"
+

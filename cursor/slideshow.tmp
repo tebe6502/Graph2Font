@@ -1,0 +1,138 @@
+
+// G2F SLIDESHOW v2.0 (18.03.2009) by Tebe/Madteam
+
+..S
+
+	icl 'slideshow.hea'
+
+* ------------------------------------------------------------
+.macro	run2ini
+	.get :1
+
+	ert (.get[0] + .get[1]<<8) <> $FFFF , 'Bad file format'
+
+	?fend=[.get[4]+.get[5]<<8]-[.get[2]+.get[3]<<8]+6+1
+
+	ift .get[?fend]<>$e0 .or .get[?fend+1]<>2 .or .get[?fend+2]<>$e1 .or .get[?fend+3]<>2
+	.print 'Missing RUN block'
+	els
+	.put[?fend]=$e2
+	.put[?fend+2]=$e3
+
+	.sav ?fend+6
+	eif
+.endm
+
+	opt h-
+	run2ini 'player.exo'
+	run2ini 'modul.exo'
+	opt h+
+
+* ------------------------------------------------------------
+
+	org	SLIDESHOW
+
+	lda:cmp:req 20
+
+	sei
+	mva	#$00	$d40e
+	mva	#$fe	$d301
+
+	mwa	#nmi	$fffa
+
+	mwa	#_rti	$200
+	mwa	#nmiQ	$202
+
+	mwa	#_rti	old_dli
+	mwa	#nmiQ	old_nmi
+
+	ldx	#<MODUL		;low byte of RMT module to X reg
+	ldy	#>MODUL		;hi byte of RMT module to Y reg
+	lda	#0		;starting song line 0-255 to A reg
+	jsr	PLAYER		;Init
+
+	mva	#$c0	$d40e
+
+loop
+..D
+	jsr PLAYER+9
+
+	ldx #<MODUL		;low byte of RMT module to X reg
+	ldy #>MODUL		;hi byte of RMT module to Y reg
+	lda #0			;starting song line 0-255 to A reg
+	jsr PLAYER		;Init
+
+	jmp	loop
+
+_rts	rts
+
+
+.proc	depack (.word xa) .reg
+
+	sta	fadr
+	stx	fadr+1
+
+	ldx #0
+	txa
+	sta:rne	$d000,x+
+
+	ldy #2
+	mwa (fadr),y	src+1
+
+	ldy #4
+	mwa (fadr),y	dst+1
+
+	.var	ln	.word
+	sbw	dst+1	src+1	ln
+
+	lda	src+1
+	sta	dst+1
+	sta	_jmp+1
+
+	lda	src+2
+	sta	dst+2
+	sta	_jmp+2	
+	
+	adw	fadr #6	src+1
+
+	ldx ln+1
+
+	lda ln
+	seq
+	inx
+
+	ldy #0
+src	lda $ffff,y
+dst	sta $ffff,y
+	iny
+	bne src
+
+	inc src+2
+	inc dst+2
+
+	dex
+	bne  src
+
+_jmp	jmp $ffff
+.endp
+
+* --------------------------------------------------
+
+NMI	bit $d40f
+	bpl vbl
+
+dli	jmp ($200)
+
+vbl	phr
+	sta	$d40f
+
+	inc	cloc
+
+	jsr PLAYER+3
+
+	jmp ($202)
+
+nmiQ	plr
+_rti	rti
+
+* --------------------------------------------------
