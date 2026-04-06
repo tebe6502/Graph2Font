@@ -1052,7 +1052,6 @@ object FZoom: TFZoom
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poDesigned
-  Scaled = False
   ShowHint = True
   OnClose = FormClose
   OnCreate = FormCreate

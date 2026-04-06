@@ -1049,7 +1049,6 @@ object Form1: TForm1
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesigned
-  Scaled = False
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -1611,6 +1610,7 @@ object Form1: TForm1
           object RecentFile: TSpTBXMRUListItem
             HidePathExtension = False
             MaxItems = 16
+            OnClick = RecentFileClick
           end
           object SpTBXSeparatorItem1: TSpTBXSeparatorItem
           end
